@@ -1,28 +1,36 @@
 import tkinter as tk
+import os
+
+def setup_icon(root):
+    """安全地嘗試設定視窗圖示"""
+    base_path = os.path.dirname(os.path.abspath(__file__))
+    icon_path = os.path.join(base_path, "stopwatch.ico")
+    if os.path.exists(icon_path):
+        try:
+            root.iconbitmap(icon_path)
+        except Exception:
+            pass # 如果圖示格式有問題，直接跳過
 
 class StopwatchApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Pro Stopwatch")
+        
+        # 1. 設定圖示 (使用我們定義的函數，避免直接硬寫路徑報錯)
+        setup_icon(self.root)
+        
+        # 2. 視窗基礎設定
+        self.root.title("Stopwatch")
         self.root.geometry("320x500")
-        self.root.configure(bg='black')  # 設定視窗背景為黑色
-
-        # 若要顯示碼表小圖示，請準備一個 stopwatch.ico 檔案放在同目錄
-        # try:
-        #     self.root.iconbitmap("stopwatch.ico")
-        # except:
-        #     pass
-
+        self.root.configure(bg='black')
+        
         self.running = False
         self.elapsed_time = 0
 
-        # 設定字型與顏色
+        # 3. UI 元件設定
         style = {"bg": "black", "fg": "white", "font": ("Consolas", 40)}
-        
         self.label = tk.Label(root, text="00:00:00", **style)
         self.label.pack(pady=30)
 
-        # 按鈕美化
         btn_style = {"bg": "#333333", "fg": "white", "activebackground": "#555555", "width": 8}
         self.btn_frame = tk.Frame(root, bg="black")
         self.btn_frame.pack()
@@ -36,7 +44,7 @@ class StopwatchApp:
         self.listbox = tk.Listbox(root, bg="#1a1a1a", fg="white", borderwidth=0, highlightthickness=0, width=40)
         self.listbox.pack(pady=10)
 
-        # 鍵盤綁定
+        # 4. 鍵盤綁定
         self.root.bind('<s>', lambda e: self.start())
         self.root.bind('<p>', lambda e: self.pause())
         self.root.bind('<r>', lambda e: self.reset())
