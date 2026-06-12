@@ -35,7 +35,3 @@
 
 ```bash
 python timer.py
-/your-repo-folder
-│── timer.py          # 主程式
-│── stopwatch.ico     # 程式視窗圖示
-└── README.md         # 專案說明文件
